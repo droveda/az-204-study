@@ -24,7 +24,7 @@ Microsoft Entra ID was previousy known as Azure Active Directory. Azure AD
 ### What is Role-based access control
 Role based access control:
 - We can define different roles to a user.
-- There are many in-bult roles.
+- There are many in-built roles.
 - You can also define your own custom roles.
 - You can assign a role at the subscription level.
 - You can assign a role at the resource group level.

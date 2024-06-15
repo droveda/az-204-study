@@ -18,7 +18,7 @@ Here users and applications can be authorized to use API's and Azure Resources.
       3. You need to implement newer methods of authentication - Multi-Factor Authentication
       4. The application itself is responsible for authenticating the user
 2. New Era
-   1. Sign in with Apple ID, Goodle ID, Linkedln, Microsoft
+   1. Sign in with Apple ID, Google ID, Linkedln, Microsoft
    2. Applications might now offload the authentication to other providers
    3. In a similar way, Microsoft Entra ID is an Identity Provider
 
@@ -32,7 +32,7 @@ Here users and applications can be authorized to use API's and Azure Resources.
 
 
 ### Microsoft Authentication Library (MSAL)
-The Microsoft Authentication Library (MSAL) enables developers to acquire security tokens from the Microsoft identity platform to authenticate users and access secured web APIs. It can be used to provide secure access to Microsoft Graph, other Microsoft APIs, third-party web APIs, or your own web API. MSAL supports many differente applications architectures and platforms including .NET, JavaScript, Java, Phyton, Android, and IOS.  
+The Microsoft Authentication Library (MSAL) enables developers to acquire security tokens from the Microsoft identity platform to authenticate users and access secured web APIs. It can be used to provide secure access to Microsoft Graph, other Microsoft APIs, third-party web APIs, or your own web API. MSAL supports many different applications architectures and platforms including .NET, JavaScript, Java, Phyton, Android, and IOS.  
 https://learn.microsoft.com/en-us/entra/identity-platform/msal-overview  
 https://learn.microsoft.com/en-us/entra/identity-platform/index-web-app  
 
@@ -45,19 +45,21 @@ A web application on behalf of a user wants to access a resource that is in the 
 
 
 ##### Oauth Grant Types
-1. Client Credentials
+1. Client Credentials (https://www.oauth.com/oauth2-servers/access-tokens/client-credentials/)
    1. grant_type = client_credentials
-      1. First get the Access Token using an client_id and a client_secret, score (not mandatory). (You can pass this info in the body x-www-form-urlencoded format)
-      2. After call the API using the Access Token -> Header - Authorization "Bearer <access-token>"
+      1. First get the Access Token using an client_id and a client_secret, scope (optional). (You can pass this info in the body x-www-form-urlencoded format)
+      2. After that you can call the API using the Access Token -> Header - Authorization "Bearer <access-token>"
    2. This is a type when it comes to Oauth. This is used by applications that need to get an access token outside the context of a user.
-2. Authorization Code
-   1. The first step in the flow is to get an authorization code
-      1. The applciation will open up the browser and the user will be directed to the Authorization Server. The request will have the scopre of what resources are beign requested by the user.
-   2. A code will be sent in the response back. There needs to be a redirect URI in place, so that the Authorization Server can send the code back to the web application.
-   3. The web application now formulates a backend POST request to exchange the code for an Access Token.
-   4. Here Microsoft Entra ID will send the access token which will have the required permissions.
-   5. Here we have an entire 2 step proccess which is more secure.
-   6. The Application can now use the Access Token to request access to the storage API for the user.
+   3. The Client Credentials grant is used when applications request an access token to access their own resources, not on behalf of a user.
+2. Authorization Code (https://developer.okta.com/blog/2018/04/10/oauth-authorization-code-grant-type)
+   1. The Authorization Code grant type is used by confidential and public clients to exchange an authorization code for an access token.
+   2. The first step in the flow is to get an authorization code
+      1. The applciation will open up the browser and the user will be directed to the Authorization Server. The request will have the scope of what resources are beign requested by the user.
+   3. A code will be sent in the response back. There needs to be a redirect URI in place, so that the Authorization Server can send the code back to the web application.
+   4. The web application now formulates a backend POST request to exchange the code for an Access Token.
+   5. Here Microsoft Entra ID will send the access token which will have the required permissions.
+   6. Here we have an entire 2 step proccess which is more secure.
+   7. The Application can now use the Access Token to request access to the storage API for the user.
 
 
 ###### Authorization Code Workflow
@@ -86,7 +88,7 @@ A web application on behalf of a user wants to access a resource that is in the 
 OpenID Connect (OIDC) extends the Oauth 2.0 authorization protocol for use as an additional protocol. You can use OIDC to enable single sign-on (SSO) between your Oauth-enabled applications by using a security token called an **ID Token**.  
 
 
-### Lab: Asp Net Application - Addint Authentication
+### Lab: Asp Net Application - Adding Authentication
 * Create a new App Net web application
 * Go to Azure and create a new Application Object
   * Microsoft Entra ID -> Default Directory -> left side menu -> App Registration
@@ -95,7 +97,7 @@ OpenID Connect (OIDC) extends the Oauth 2.0 authorization protocol for use as an
       * Click Register
 
 ### Lab -> Getting a blob content using the postman tools and oauth 2.0 Client Credentials Flow
-* Have a storage account and a postman application object in place
+* Have a storage account created and a postman application object in place
 * Go to the storage account
   * left side menu -> Access Control (IAM)
     * click Add Role Assignment, select the READER role and add the assignment to the postman application object
@@ -108,7 +110,7 @@ OpenID Connect (OIDC) extends the Oauth 2.0 authorization protocol for use as an
     * scope = https://storage.azure.com/.default
   * POST request with the following URL: https://login.microsoftonline.com/<account-id>/oauth/v2.0/token
 * Go to the storage account and copy the blob URL
-  * Execute a GET request to the URL that was copied, send the request and it will answer with a 404 wichi is expected.
+  * Execute a GET request to the URL that was copied, send the request and it will answer with a 404 which is expected.
   * Add the following headers:
     * Authorization = Bearer <the-token-that-was-generated-before>
     * x-ms-version = 2017-11-09
