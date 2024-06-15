@@ -183,3 +183,35 @@ You can Have two types of Managed Identityes
 * The key difference of an User Assigned Managed Identity is that it has a separated lifecycle of the resource, a System Assigned Managed Identity if you delete the VM for example it will also delete the System Managed Identity
 * With **User Assigned Managed Identity** you can assign the same identity to a Virtual Machine and an Azure Function or any other resource for instance. 
 
+
+### Some tips for local development
+* https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview-for-developers?tabs=portal%2Cjava
+* https://learn.microsoft.com/en-us/java/api/overview/azure/identity-readme?view=azure-java-stable&preserve-view=true
+* https://learn.microsoft.com/en-us/javascript/api/overview/azure/identity-readme?view=azure-node-latest#environment-variables
+* https://learn.microsoft.com/en-us/azure/developer/java/sdk/identity-azure-hosted-auth#configure-defaultazurecredential (This is nice)
+* https://stackoverflow.com/questions/72781921/azure-defaultcredentials-with-intellij-not-working-because-no-authmethoddetails
+* https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication/local-development-dev-accounts?tabs=azure-portal%2Csign-in-visual-studio%2Ccommand-line (this is also nice, and this really worked fine :-) )
+  * Simple Summary in how it worked:
+    * 1 - Create Azure AD group for local development
+    * 2 - Assign roles to the Azure AD group
+      * for example give the Storage Blob Data Contributor Role to a Scorage Account scope level
+    * 3 - Sign-in to Azure using the Azure CLI -> az login
+      * az account list
+      * az account get-access-token
+    * 4 - Implement DefaultAzureCredential in you application, example with Java:
+
+```
+ @Override
+    public void uploadFileManagedIdentityExample(String fileName, String path) {
+
+        BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
+                .endpoint(STORAGE_ACCOUNT_URL)
+                .credential(new DefaultAzureCredentialBuilder()
+                        .build())
+                .buildClient();
+
+        BlobContainerClient blobContainerClient = blobServiceClient.getBlobContainerClient(CONTAINER_NAME);
+        BlobClient blobClient = blobContainerClient.getBlobClient(fileName);
+        blobClient.uploadFromFile(path + fileName);
+    }
+```

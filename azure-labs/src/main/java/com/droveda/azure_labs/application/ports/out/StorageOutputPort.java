@@ -4,4 +4,6 @@ public interface StorageOutputPort {
 
     void uploadFile(String fileName, String path);
 
+    void uploadFileManagedIdentityExample(String fileName, String path);
+
 }

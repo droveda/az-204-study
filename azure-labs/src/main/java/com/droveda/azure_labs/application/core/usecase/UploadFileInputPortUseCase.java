@@ -15,4 +15,9 @@ public class UploadFileInputPortUseCase implements UploadFileInputPort {
     public void uploadFile(String fileName, String path) {
         storageOutputPort.uploadFile(fileName, path);
     }
+
+    @Override
+    public void uploadFileManagedIdentity(String fileName, String path) {
+        storageOutputPort.uploadFileManagedIdentityExample(fileName, path);
+    }
 }

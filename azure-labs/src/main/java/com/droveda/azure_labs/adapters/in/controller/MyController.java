@@ -28,19 +28,23 @@ public class MyController {
     @Autowired
     private UploadFileInputPort uploadFileInputPort;
 
-    @GetMapping("/test")
-    public ResponseEntity<String> firstExample() {
-
+    @GetMapping("/test_upload")
+    public ResponseEntity<String> exampleUploadFile() {
         uploadFileInputPort.uploadFile("script01.txt", "./some-path/");
+        return ResponseEntity.ok("OK");
+    }
 
+    @GetMapping("/test_upload_managed_identity")
+    public ResponseEntity<String> exampleUploadFileManagedIdentity() {
+        uploadFileInputPort.uploadFileManagedIdentity("script01.txt", "./some-path/");
         return ResponseEntity.ok("OK");
     }
 
     @GetMapping("/kv")
     public ResponseEntity<String> keyVaultExample() {
-        String tenantId = System.getenv("MY_AZ_TENANT_ID");
-        String clientId = System.getenv("MY_AZ_CLIENT_ID");
-        String clientSecret = System.getenv("MY_AZ_CLIENT_SECRET");
+        String tenantId = System.getenv("AZURE_TENANT_ID");
+        String clientId = System.getenv("AZURE_CLIENT_ID");
+        String clientSecret = System.getenv("AZURE_CLIENT_SECRET");
 
         var clientSecretCredential = new ClientSecretCredentialBuilder()
                 .clientId(clientId)

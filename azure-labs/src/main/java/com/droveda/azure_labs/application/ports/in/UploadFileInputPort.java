@@ -4,4 +4,6 @@ public interface UploadFileInputPort {
 
     void uploadFile(String fileName, String path);
 
+    void uploadFileManagedIdentity(String fileName, String path);
+
 }

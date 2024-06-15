@@ -1,6 +1,9 @@
 package com.droveda.azure_labs.adapters.out.storageaccount;
 
 import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.IntelliJCredential;
+import com.azure.identity.IntelliJCredentialBuilder;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
@@ -11,14 +14,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class StorageAccountAdapter implements StorageOutputPort {
 
+    private static final String STORAGE_ACCOUNT_URL = "https://drovedastorage.blob.core.windows.net/";
+    private static final String CONTAINER_NAME = "data";
+
     @Override
     public void uploadFile(String fileName, String path) {
 //        String connectStr = System.getenv("AZURE_STORAGE_CONNECTION_STRING");
 
         // GET these values from the Azure Portal, Inside your App Registration in Microsoft Entra ID
-        String tenantId = System.getenv("MY_AZ_TENANT_ID");
-        String clientId = System.getenv("MY_AZ_CLIENT_ID");
-        String clientSecret = System.getenv("MY_AZ_CLIENT_SECRET");
+        String tenantId = System.getenv("AZURE_TENANT_ID");
+        String clientId = System.getenv("AZURE_CLIENT_ID");
+        String clientSecret = System.getenv("AZURE_CLIENT_SECRET");
 
         var clientSecretCredential = new ClientSecretCredentialBuilder()
                 .clientId(clientId)
@@ -28,13 +34,25 @@ public class StorageAccountAdapter implements StorageOutputPort {
 
         BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
 //                .connectionString(connectStr)
-                .endpoint("https://drovedastorage.blob.core.windows.net/")
+                .endpoint(STORAGE_ACCOUNT_URL)
                 .credential(clientSecretCredential)
                 .buildClient();
 
-        String containerName = "data";
+        BlobContainerClient blobContainerClient = blobServiceClient.getBlobContainerClient(CONTAINER_NAME);
+        BlobClient blobClient = blobContainerClient.getBlobClient(fileName);
+        blobClient.uploadFromFile(path + fileName);
+    }
 
-        BlobContainerClient blobContainerClient = blobServiceClient.getBlobContainerClient(containerName);
+    @Override
+    public void uploadFileManagedIdentityExample(String fileName, String path) {
+
+        BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
+                .endpoint(STORAGE_ACCOUNT_URL)
+                .credential(new DefaultAzureCredentialBuilder()
+                        .build())
+                .buildClient();
+
+        BlobContainerClient blobContainerClient = blobServiceClient.getBlobContainerClient(CONTAINER_NAME);
         BlobClient blobClient = blobContainerClient.getBlobClient(fileName);
         blobClient.uploadFromFile(path + fileName);
     }
