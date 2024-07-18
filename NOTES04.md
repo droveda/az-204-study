@@ -1,0 +1,4 @@
+## To Study
+* https://learn.microsoft.com/en-us/entra/identity-platform/v2-oauth2-auth-code-flow
+* https://learn.microsoft.com/en-us/entra/identity-platform/certificate-credentials
+* https://www.udemy.com/course/enterprise-oauth-for-developers/?utm_source=adwords&utm_medium=udemyads&utm_campaign=Webindex_Catchall_la.EN_cc.BR&campaigntype=Search&portfolio=Brazil&language=EN&product=Course&test=&audience=DSA&topic=&priority=&utm_content=deal4584&utm_term=_._ag_119370706961_._ad_658067503893_._kw__._de_c_._dm__._pl__._ti_aud-2297301418005%3Adsa-406594358574_._li_9198564_._pd__._&matchtype=&gad_source=1&gbraid=0AAAAADROdO2EOC09WB6t-iCwN2urvSJMj&gclid=Cj0KCQjw-uK0BhC0ARIsANQtgGMSQXXSmpG9QKo9qVRX0Randh-y9lR94vs7fUweo_uCyRObQXhkPtUaAikQEALw_wcB&couponCode=2021PM25
