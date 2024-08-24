@@ -43,6 +43,11 @@ https://oauth.net
 Industry-standard protocol for authorization, a set of standards on how clients can authorize thenselves to access a resource.  
 A web application on behalf of a user wants to access a resource that is in the Azure Storage Account, we can use the Authorization Code Flow.  
 
+OAuth - Standard when it comes to authorization - it just provides the flow of how authorization should work.  
+When trying to access the Graph API, we first sent a request to get an access token, a bearer token was returned.  
+Here the grant_type was mentioned as client_credentials.  
+This is a type when it comes to OAuth. This is used by applications that need to get access token outside of the context of a user.  
+
 
 ##### Oauth Grant Types
 1. Client Credentials (https://www.oauth.com/oauth2-servers/access-tokens/client-credentials/)
@@ -51,15 +56,15 @@ A web application on behalf of a user wants to access a resource that is in the 
       2. After that you can call the API using the Access Token -> Header - Authorization "Bearer <access-token>"
    2. This is a type when it comes to Oauth. This is used by applications that need to get an access token outside the context of a user.
    3. The Client Credentials grant is used when applications request an access token to access their own resources, not on behalf of a user.
-2. Authorization Code (https://developer.okta.com/blog/2018/04/10/oauth-authorization-code-grant-type)
+2. Authorization Code (https://developer.okta.com/blog/2018/04/10/oauth-authorization-code-grant-type) (On behalf of a user, it depends on the permission of the user to access the resources)
    1. The Authorization Code grant type is used by confidential and public clients to exchange an authorization code for an access token.
-   2. The first step in the flow is to get an authorization code
-      1. The applciation will open up the browser and the user will be directed to the Authorization Server. The request will have the scope of what resources are beign requested by the user.
-   3. A code will be sent in the response back. There needs to be a redirect URI in place, so that the Authorization Server can send the code back to the web application.
-   4. The web application now formulates a backend POST request to exchange the code for an Access Token.
+   2. The first step in the flow is to get an **authorization code**
+      1. The application will open up the browser and the user will be directed to the **Authorization Server**. The request will have the **scope** of what resources are beign requested by the user.
+   3. A code will be sent in the response back. There needs to be a **redirect URI** in place, so that the Authorization Server can send the code back to the web application.
+   4. The web application now formulates a backend POST request to exchange the code for an **Access Token**.
    5. Here Microsoft Entra ID will send the access token which will have the required permissions.
    6. Here we have an entire 2 step proccess which is more secure.
-   7. The Application can now use the Access Token to request access to the storage API for the user.
+   7. The Application can now use the **Access Token** to request access to the storage API for the user.
 
 
 ###### Authorization Code Workflow
@@ -86,6 +91,7 @@ A web application on behalf of a user wants to access a resource that is in the 
 
 #### OpenID Connect on the Microsoft identity platform
 OpenID Connect (OIDC) extends the Oauth 2.0 authorization protocol for use as an additional protocol. You can use OIDC to enable single sign-on (SSO) between your Oauth-enabled applications by using a security token called an **ID Token**.  
+The full specification for OIDC is available on the OpenID Fundation's website.  
 
 
 ### Lab: Asp Net Application - Adding Authentication
