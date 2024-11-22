@@ -1,3 +1,11 @@
 spring:
   application:
     name: azure-labs
+  jms:
+    servicebus:
+      pricing-tier: standard
+      connection-string: amqps://droveda.servicebus.windows.net:5671
+      policy-name: ${POLICY_NAME}
+      policy-key: ${POLICY_KEY}
+    listener:
+      receive-timeout: 60000
