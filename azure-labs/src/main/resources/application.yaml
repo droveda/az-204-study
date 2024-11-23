@@ -1,3 +1,7 @@
 spring:
   application:
     name: azure-labs
+
+servicebus:
+  connectionString: ${MY_SB_CONNECTION_STRING}
+  queueName: my-queue
